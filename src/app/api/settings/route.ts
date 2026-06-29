@@ -1,16 +1,23 @@
 import { prisma } from "@/lib/prisma";
-import build from "next/dist/build";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
     const { ownerId, businessName, supportEmail, knowledge } = await req.json();
-    if (!ownerId) {
+    if (!ownerId || !businessName || !supportEmail || !knowledge) {
       return NextResponse.json({
-        message: "Owner is required",
-        status: 400,
+        message: "Owner, Business Name, Support Email and Knowledge all are required",
+        status: 500,
       });
     }
+
+    console.log({
+        ownerId,
+        businessName,
+        supportEmail,
+        knowledge,
+      });
     const settings = await prisma.settings.upsert({
       where: {
         ownerId: ownerId,
@@ -29,9 +36,13 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json(settings);
   } catch (error) {
-    return NextResponse.json({
-      message: `Settings error ${error}`,
-      status: 400,
-    });
+    console.error("Settings Error:", error);
+  
+    return NextResponse.json(
+      {
+        message: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }
