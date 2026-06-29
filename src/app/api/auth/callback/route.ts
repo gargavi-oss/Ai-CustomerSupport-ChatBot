@@ -10,18 +10,15 @@ export async function GET(req: NextRequest) {
       { status: 400 }
     );
   }
-  const redirectUri = `${process.env.NEXT_PUBLIC_APP_URI}/api/auth/callback`
-  const session = await scalekit.authenticateWithCode(code,redirectUri);
-  console.log(session)
-  const response = NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URI}`);
-  response.cookies.set("acess_token",session.accessToken,{
+  const redirectUri = `${process.env.NEXT_PUBLIC_APP_URI}/api/auth/callback`;
+  const session = await scalekit.authenticateWithCode(code, redirectUri);
+  const response = NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URI}/dashboard`);
+  response.cookies.set("acess_token", session.accessToken, {
     httpOnly: true,
-    maxAge: 24*60*60*1000,
+    maxAge: 24 * 60 * 60 * 1000,
     secure: false,
-    path:"/"
+    path: "/",
   });
 
-return response;
-
-
+  return response;
 }

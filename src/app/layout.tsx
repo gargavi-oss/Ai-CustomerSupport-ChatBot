@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ai Customer Support",
+  title: "QueryNest AI",
   description: "A ChatBot which you can embed in your website",
 };
 
