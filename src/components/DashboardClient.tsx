@@ -84,6 +84,7 @@ useEffect(() => {
     whileTap={{ scale: 0.97 }}
     onClick={() => window.location.href = "/dashboard/embed"}
     className="rounded-xl border border-zinc-300 px-5 py-3 text-sm font-medium hover:bg-zinc-100"
+    disabled={!saved}
   >
     🚀 Embed Chatbot
   </motion.button>

@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     if (!ownerId) {
       return NextResponse.json(
         { message: "Owner ID is required" },
-        { status: 400 }
+        { status: 500 }
       );
     }
 
