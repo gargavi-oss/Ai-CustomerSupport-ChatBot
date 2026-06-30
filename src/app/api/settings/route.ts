@@ -11,13 +11,6 @@ export async function POST(req: NextRequest) {
         status: 500,
       });
     }
-
-    console.log({
-        ownerId,
-        businessName,
-        supportEmail,
-        knowledge,
-      });
     const settings = await prisma.settings.upsert({
       where: {
         ownerId: ownerId,

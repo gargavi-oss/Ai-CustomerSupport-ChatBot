@@ -2,27 +2,27 @@ import { prisma } from "@/lib/prisma";
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req:NextRequest){
-    try {
-        const {message,ownerId} = await req.json()
-        if(!message || !ownerId){
-            return NextResponse.json({
-                message:"Message and ownerid required",
-                status: 502
-            })
-        }
-        const settings = await prisma.settings.findUnique({
-            where: {
-              ownerId,
-            },
-          });
-        if(!settings){
-            return NextResponse.json({
-                message:"Chatbot is not configured yet",
-                status: 500
-            })
-        }
-        const prompt = `
+export async function POST(req: NextRequest) {
+  try {
+    const { message, ownerId } = await req.json();
+    if (!message || !ownerId) {
+      return NextResponse.json({
+        message: "Message and ownerid required",
+        status: 502,
+      });
+    }
+    const settings = await prisma.settings.findUnique({
+      where: {
+        ownerId,
+      },
+    });
+    if (!settings) {
+      return NextResponse.json({
+        message: "Chatbot is not configured yet",
+        status: 500,
+      });
+    }
+    const prompt = `
 You are an AI Customer Support Assistant for "${settings.businessName}".
 
 ========================
@@ -103,14 +103,12 @@ RESPONSE STYLE
 Always answer as if you are a real support representative of ${settings.businessName}.
 `;
 
-const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY})
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-const interaction = await ai.interactions.create({
-    model: "gemini-2.5-flash",
-    input: prompt,
-  });
-  console.log(interaction.output_text);
-    } catch (error) {
-        
-    }
+    const interaction = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt
+    });
+    console.log(interaction.text);
+  } catch (error) {}
 }

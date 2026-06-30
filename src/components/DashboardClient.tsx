@@ -53,7 +53,6 @@ useEffect(() => {
     setLoading(true);
     try {
         const result = await axios.post('/api/settings',{ownerId,businessName,supportEmail,knowledge})
-        console.log(result.data);
         setLoading(false)
         setSaved(true)
         setTimeout(()=>setSaved(false),3000);
