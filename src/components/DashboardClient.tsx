@@ -62,7 +62,7 @@ useEffect(() => {
     }
   }
   return (
-    <div className="min-h-screen bg-linear-to-br from-white to-zinc-200 text-zinc-900 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50">
       <Navbar
         email={email}
         handleLogin={handleLogin}
